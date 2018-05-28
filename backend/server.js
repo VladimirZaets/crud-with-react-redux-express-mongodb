@@ -1,6 +1,7 @@
 import express from 'express';
 import mongodb from 'mongodb';
 import bodyParser from 'body-parser';
+import axios from 'axios';
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,7 +20,9 @@ function validate (data) {
 
 mongodb.MongoClient.connect(dbUrl, (err, db) => {
     app.get('/api/games', (req, res) => {
+        console.log(111);
         db.collection('games').find({}).toArray((err, games) => {
+            console.log(games);
             res.json({ games });
         });
     });
@@ -41,6 +44,12 @@ mongodb.MongoClient.connect(dbUrl, (err, db) => {
 
             res.json({});
         });
+    });
+    app.post('/payload', (req, res) => {
+        console.log(req, res);
+    });
+    app.post('/authorize', (req, res) => {
+        console.log(req, res);
     });
     app.post('/api/games', (req, res) => {
         const {errors, isValid} = validate(req.body);
@@ -99,6 +108,6 @@ mongodb.MongoClient.connect(dbUrl, (err, db) => {
         });
     });
 
-    app.listen(8080, () => console.log('Server is running on localhost:8080'));
+    app.listen(4567, () => console.log('Server is running on localhost:8080'));
 });
 
